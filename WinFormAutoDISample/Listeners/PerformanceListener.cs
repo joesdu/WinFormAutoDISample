@@ -1,7 +1,3 @@
-// ***********************************************************************
-// Copyright (c) luxy. All rights reserved.
-// ***********************************************************************
-
 using System.Diagnostics.Tracing;
 using Microsoft.Extensions.Logging;
 
