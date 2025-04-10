@@ -13,12 +13,12 @@ public sealed class PerformanceListener(ILogger<PerformanceListener> logger) : E
     /// <summary>
     /// CPU使用率更新事件
     /// </summary>
-    public event EventHandler<Tuple<double, string?>> CpuUsageUpdated;
+    public event EventHandler<Tuple<double, string?>>? CpuUsageUpdated;
 
     /// <summary>
     /// 内存使用率更新事件
     /// </summary>
-    public event EventHandler<Tuple<double, string?>> MemoryUsageUpdated;
+    public event EventHandler<Tuple<double, string?>>? MemoryUsageUpdated;
 
     /// <inheritdoc />
     protected override void OnEventSourceCreated(EventSource eventSource)

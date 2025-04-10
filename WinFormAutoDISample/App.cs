@@ -5,8 +5,6 @@ using WinFormAutoDISample.Properties;
 
 namespace WinFormAutoDISample;
 
-#pragma warning disable IDE0032 // 使用自动属性
-
 internal sealed class App : ApplicationContext
 {
     private static App? _current;

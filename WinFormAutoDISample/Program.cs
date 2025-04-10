@@ -22,6 +22,9 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
+        AssemblyHelper.LoadFromAllDll = false;
+        // 添加其他需要被反射的程序集
+        //AssemblyHelper.AddAssemblyNames();
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
         WinApis.EnsureSingleInstance(out var createdNew);

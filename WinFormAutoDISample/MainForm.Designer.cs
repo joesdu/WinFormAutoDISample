@@ -32,9 +32,9 @@ partial class MainForm
         label1 = new Label();
         statusStrip1 = new StatusStrip();
         tsslCpuTitle = new ToolStripStatusLabel();
+        tsslCpu = new ToolStripStatusLabel();
         tsslRamTitle = new ToolStripStatusLabel();
         tsslRam = new ToolStripStatusLabel();
-        tsslCpu = new ToolStripStatusLabel();
         statusStrip1.SuspendLayout();
         SuspendLayout();
         // 
@@ -73,6 +73,12 @@ partial class MainForm
         tsslCpuTitle.Size = new Size(35, 17);
         tsslCpuTitle.Text = "CPU:";
         // 
+        // tsslCpu
+        // 
+        tsslCpu.Name = "tsslCpu";
+        tsslCpu.Size = new Size(12, 17);
+        tsslCpu.Text = " ";
+        // 
         // tsslRamTitle
         // 
         tsslRamTitle.Name = "tsslRamTitle";
@@ -85,12 +91,6 @@ partial class MainForm
         tsslRam.Size = new Size(12, 17);
         tsslRam.Text = " ";
         // 
-        // tsslCpu
-        // 
-        tsslCpu.Name = "tsslCpu";
-        tsslCpu.Size = new Size(12, 17);
-        tsslCpu.Text = " ";
-        // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 17F);
@@ -100,6 +100,7 @@ partial class MainForm
         Controls.Add(label1);
         Controls.Add(button1);
         Name = "MainForm";
+        StartPosition = FormStartPosition.CenterScreen;
         Text = "Form1";
         Load += MainForm_Load;
         statusStrip1.ResumeLayout(false);
