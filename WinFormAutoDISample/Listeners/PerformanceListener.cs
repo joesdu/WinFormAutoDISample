@@ -40,7 +40,10 @@ public sealed class PerformanceListener(ILogger<PerformanceListener> logger) : E
             {
                 case "cpu-usage":
                 {
-                    logger.LogInformation("CPU USAGE:{CPU}", Math.Round((double)metrics["Mean"], 2));
+                    if (logger.IsEnabled(LogLevel.Information))
+                    {
+                        logger.LogInformation("CPU USAGE:{CPU}", Math.Round((double)metrics["Mean"], 2));
+                    }
                     CpuUsageUpdated?.Invoke(this, new(Math.Round((double)metrics["Mean"], 2), metrics["DisplayUnits"].ToString()));
                     break;
                 }
