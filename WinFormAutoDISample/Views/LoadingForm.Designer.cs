@@ -34,7 +34,7 @@ partial class LoadingForm
         // label1
         // 
         label1.AutoSize = true;
-        label1.Location = new Point(221, 179);
+        label1.Location = new Point(123, 119);
         label1.Name = "label1";
         label1.Size = new Size(55, 17);
         label1.TabIndex = 0;
@@ -44,7 +44,7 @@ partial class LoadingForm
         // 
         AutoScaleDimensions = new SizeF(7F, 17F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(562, 387);
+        ClientSize = new Size(312, 258);
         Controls.Add(label1);
         FormBorderStyle = FormBorderStyle.None;
         Name = "LoadingForm";

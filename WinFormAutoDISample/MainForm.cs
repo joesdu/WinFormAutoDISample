@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using WinFormAutoDISample.Listeners;
 using WinFormAutoDISample.Messenger;
 using WinFormAutoDISample.Properties;
+using WinFormAutoDISample.Services.Contracts;
 
 // ReSharper disable AsyncVoidMethod
 // ReSharper disable ClassNeverInstantiated.Global
@@ -14,12 +15,15 @@ namespace WinFormAutoDISample;
 /// <summary>
 /// 主窗体
 /// </summary>
-[DependencyInjection(ServiceLifetime.Singleton, AddSelf = true, SelfOnly = true)]
-public partial class MainForm : Form
+[DependencyInjection(ServiceLifetime.Singleton, AsType = typeof(IWindow))]
+public partial class MainForm : Form, IWindow
 {
     private readonly ILogger<MainForm> _logger;
+    private readonly IMessenger _messenger;
     private readonly PerformanceListener _performanceListener;
-    private IMessenger _messenger;
+
+    /// <inheritdoc />
+    public event EventHandler? Loaded;
 
     /// <summary>
     /// 构造函数
@@ -30,10 +34,23 @@ public partial class MainForm : Form
         _logger = logger;
         _messenger = messenger;
         _performanceListener = performanceListener;
+        FormClosed += MainForm_FormClosed;
+    }
+
+    private void MainForm_FormClosed(object? sender, FormClosedEventArgs e)
+    {
+        _performanceListener.CpuUsageUpdated -= OnCpuUsageUpdated;
+        _performanceListener.MemoryUsageUpdated -= MemoryUsageUpdated;
+        _messenger.Unregister<MainForm>(this); // 注销当前窗体的消息接收
+        _logger.LogInformation("MainForm closed.");
+        // 释放资源
+        _performanceListener.Dispose();
+        Application.Exit();
     }
 
     private void MainForm_Load(object? sender, EventArgs e)
     {
+        Loaded?.Invoke(this, e);
         _performanceListener.CpuUsageUpdated += OnCpuUsageUpdated;
         _performanceListener.MemoryUsageUpdated += MemoryUsageUpdated;
     }
@@ -44,7 +61,8 @@ public partial class MainForm : Form
         {
             Invoke(() =>
             {
-                if (IsDisposed) return;
+                if (IsDisposed)
+                    return;
                 tsslRam.Text = $@"{e.Item1} {e.Item2}";
             });
         }
@@ -60,7 +78,8 @@ public partial class MainForm : Form
         {
             Invoke(() =>
             {
-                if (IsDisposed) return;
+                if (IsDisposed)
+                    return;
                 tsslCpu.Text = $@"{e.Item1} {e.Item2}";
             });
         }
@@ -76,7 +95,8 @@ public partial class MainForm : Form
         var version = Environment.Version;
         Invoke(() =>
         {
-            if (IsDisposed) return;
+            if (IsDisposed)
+                return;
             label1.Text = AppResource.MainForm_Hello_Click.Format(version);
         });
     }

@@ -8,6 +8,7 @@ using WinFormAutoDISample.Common;
 using WinFormAutoDISample.Listeners;
 using WinFormAutoDISample.Messenger;
 using WinFormAutoDISample.Properties;
+using WinFormAutoDISample.Services;
 using WinFormAutoDISample.Views;
 
 // ReSharper disable AsyncVoidMethod
@@ -86,15 +87,6 @@ internal static class Program
         await host.StartAsync();
         // 关闭加载窗口
         loading.Close();
-        // 启动主窗体
-        var mainForm = host.Services.GetRequiredService<MainForm>();
-        mainForm.FormClosed += MainForm_FormClosed;
-        mainForm.Show();
-    }
-
-    private static void MainForm_FormClosed(object? sender, FormClosedEventArgs e)
-    {
-        Application.Exit();
     }
 
     private static IHostBuilder CreateHostBuilder(params string[] args) =>
@@ -126,6 +118,9 @@ internal static class Program
             .ConfigureServices(sc =>
             {
                 sc.AddApplicationModules<AppServiceModules>();
+
+                sc.AddHostedService<ApplicationHostService>();
+
                 sc.AddSingleton<IMessenger>(new Messenger.Messenger());
                 sc.AddSingleton<PerformanceListener>();
             });

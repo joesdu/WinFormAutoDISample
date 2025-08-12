@@ -1,5 +1,7 @@
 using EasilyNET.Core.Misc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using WinFormAutoDISample.Common;
 using WinFormAutoDISample.Properties;
 
@@ -8,6 +10,7 @@ namespace WinFormAutoDISample;
 internal sealed class App : ApplicationContext
 {
     private static App? _current;
+    private static ILogger<App>? _logger;
 
     private App(ref IHost host)
     {
@@ -33,12 +36,20 @@ internal sealed class App : ApplicationContext
     public static void Initialize(ref IHost host)
     {
         _current = new(ref host);
+        _logger = host.Services.GetRequiredService<ILogger<App>>();
     }
 
-    private void OnApplicationExit(object? sender, EventArgs e)
+    private async void OnApplicationExit(object? sender, EventArgs e)
     {
-        WinApis._mutex.ReleaseMutex();
-        Host.StopAsync().GetAwaiter().GetResult();
+        try
+        {
+            WinApis._mutex.ReleaseMutex();
+            await Host.StopAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "OnApplicationExit");
+        }
     }
 
     private static void OnThreadException(object sender, ThreadExceptionEventArgs e)

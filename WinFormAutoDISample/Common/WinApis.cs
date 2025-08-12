@@ -10,7 +10,7 @@ internal static partial class WinApis
     private const int SW_RESTORE = 9;
 
     //private const string GlobalMutexName = "DeepLogic.SourceDebug";
-    private static readonly string GlobalMutexName = Assembly.GetExecutingAssembly().GetName().Name ?? "NugetPackManager";
+    private static readonly string GlobalMutexName = Assembly.GetExecutingAssembly().GetName().Name ?? "WinFormAutoDISample";
     internal static Mutex _mutex = null!;
 
     /// <summary>
